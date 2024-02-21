@@ -13,7 +13,7 @@ urlpatterns = [
 ]
 
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register(r'course', CourseViewSet, basename='course')
 
 
