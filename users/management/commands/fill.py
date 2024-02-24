@@ -30,6 +30,7 @@ class Command(BaseCommand):
                 amount=amount,
                 payment_method=payment_method
             )
+            payment.save()
             print("Платеж успешно создан.")
         except Exception as e:
             print(f"Произошла ошибка: {e}")
