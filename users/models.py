@@ -5,6 +5,7 @@ from tracker.models import Course, Lesson
 
 NULLABLE = {'null': True, 'blank': True}
 
+
 # Create your models here.
 class User(AbstractUser):
     username = None
@@ -23,6 +24,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
