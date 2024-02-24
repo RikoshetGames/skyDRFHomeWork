@@ -8,4 +8,4 @@ class PaymentListAPIView(generics.ListAPIView):
     serializer_class = PaymentSerializer
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['payment_date']
-    search_fields = ['course_title', 'lesson_title', 'payment_method']
+    search_fields = ['course__title', 'lesson__title', 'payment__method']
