@@ -2,6 +2,7 @@ from django.db import models
 
 NULLABLE = {'null': True, 'blank': True}
 
+
 class Course(models.Model):
     name = models.CharField(max_length=150, verbose_name='Название курса')
     preview = models.ImageField(upload_to='tracker/', verbose_name='Превью курса', **NULLABLE)

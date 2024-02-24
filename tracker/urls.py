@@ -18,4 +18,3 @@ router.register(r'course', CourseViewSet, basename='course')
 
 
 urlpatterns += router.urls
-
