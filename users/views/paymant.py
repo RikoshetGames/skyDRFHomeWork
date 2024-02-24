@@ -3,7 +3,7 @@ from users.models import Payment
 from users.serializers.paymant import PaymentSerializer
 
 
-class PaymentList(generics.ListAPIView):
+class PaymentListAPIView(generics.ListAPIView):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]

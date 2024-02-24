@@ -1,6 +1,6 @@
 from rest_framework import serializers, fields
 
-from tracker.models import Course
+from tracker.models import Course, Lesson
 from tracker.seriallizers.lesson import LessonSerializer
 
 
@@ -10,9 +10,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
     def get_lesson_count(self, obj):
-        return obj.lesson_set.count()
+        return obj.lessons.count()
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'description', 'lesson_count']
+        fields = ['id', 'name', 'description', 'lesson_count', 'lessons']
 
