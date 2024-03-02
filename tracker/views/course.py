@@ -24,3 +24,8 @@ class CourseViewSet(ModelViewSet):
         new_course.user = self.request.user
         new_course.save()
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_moderator:
+            return Course.objects.all()
+        return Course.objects.filter(owner=user)
