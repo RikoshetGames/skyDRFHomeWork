@@ -13,13 +13,7 @@ class CourseViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             self.permission_classes = [IsAuthenticated, ~IsModerator]
-        elif self.action == 'list':
-            self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
-        elif self.action == 'retrieve':
-            self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
-        elif self.action == 'update':
-            self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
-        elif self.action == 'partial_update':
+        elif self.action in ['list', 'retrieve', 'update', 'partial_update', 'destroy']:
             self.permission_classes = [IsAuthenticated, IsModerator | IsOwner]
         elif self.action == 'destroy':
             self.permission_classes = [IsAuthenticated, IsOwner]
