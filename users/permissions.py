@@ -12,4 +12,6 @@ class IsOwner(BasePermission):
     message = "Вы не владелец"
 
     def has_object_permission(self, request, view, obj):
-        return request.user == obj.user
+        if request.user == obj.user:
+            return request.method in ('GET', 'PUT', 'PATCH', 'DELETE')
+        return False
