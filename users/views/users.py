@@ -1,5 +1,5 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from users.models import User
 from users.permissions import IsOwner, IsModerator
@@ -10,6 +10,7 @@ from users.serializers.users import UserSerializer
 
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         user = serializer.save()
