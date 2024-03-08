@@ -3,6 +3,7 @@ from rest_framework import routers
 
 from tracker.views.course import CourseViewSet
 from tracker.views.lesson import LessonListView, LessonDetailView, LessonCreateView, LessonUpdateView, LessonDestroyView
+from tracker.views.subscription import SubscribeAPIView
 
 urlpatterns = [
     path('', LessonListView.as_view()),
@@ -10,6 +11,7 @@ urlpatterns = [
     path('create/', LessonCreateView.as_view()),
     path('update/<int:pk>/', LessonUpdateView.as_view()),
     path('delete/<int:pk>/', LessonDestroyView.as_view()),
+    path('subscription/', SubscribeAPIView.as_view()),
 ]
 
 
