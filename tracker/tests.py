@@ -39,7 +39,7 @@ class TrackerTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         response = self.client.get(
-            reverse('lesson_list')
+            reverse('tracker:lesson_list')
         )
 
         self.assertEquals(
