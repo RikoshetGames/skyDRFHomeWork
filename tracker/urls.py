@@ -6,12 +6,12 @@ from tracker.views.lesson import LessonListView, LessonDetailView, LessonCreateV
 from tracker.views.subscription import SubscribeAPIView
 
 urlpatterns = [
-    path('', LessonListView.as_view()),
-    path('<int:pk>/', LessonDetailView.as_view()),
-    path('create/', LessonCreateView.as_view()),
-    path('update/<int:pk>/', LessonUpdateView.as_view()),
-    path('delete/<int:pk>/', LessonDestroyView.as_view()),
-    path('subscription/', SubscribeAPIView.as_view()),
+    path('', LessonListView.as_view(), name='lesson_list'),
+    path('<int:pk>/', LessonDetailView.as_view(), name='lesson_detail'),
+    path('create/', LessonCreateView.as_view(), name='lesson_create'),
+    path('update/<int:pk>/', LessonUpdateView.as_view(), name='lesson_update'),
+    path('delete/<int:pk>/', LessonDestroyView.as_view(), name='lesson_delete'),
+    path('subscription/', SubscribeAPIView.as_view(), name='subscription'),
 ]
 
 
