@@ -182,7 +182,6 @@ class SubscriptionTestCase(APITestCase):
     def test_unsubscribe_from_course(self):
         """Тестирование отписки от курса"""
         data = {
-            "user": self.user.id,
             "course": self.course.id,
         }
 
