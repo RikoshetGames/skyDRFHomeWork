@@ -151,7 +151,7 @@ class SubscriptionTestCase(APITestCase):
             user=self.user
         )
 
-        self.client.force_authenticate(user=self.user)
+
         self.user.status = False
 
 
@@ -194,6 +194,8 @@ class SubscriptionTestCase(APITestCase):
             "course": self.course.id,
         }
 
+        self.client.force_authenticate(user=self.user)
+
         response_subscribe = self.client.post(
             reverse('subscription'),
             data=data
@@ -212,16 +214,24 @@ class SubscriptionTestCase(APITestCase):
         self.user.refresh_from_db()
         self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists())
 
-    def test_auth_user_have_to_subscribe_course(self):
-        self.client.force_authenticate(user=self.user)
+    def test_subscribe_to_course_unauthorized(self):
+        """Тестирование подписки на курс для неавторизованного пользователя"""
+
         data = {
             "course": self.course.id,
         }
 
-        response = self.client.post(reverse('subscription'), data=data)
+        response = self.client.post(
+            reverse('subscription'),
+            data=data
+        )
 
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(
+            response.status_code,
+            status.HTTP_401_UNAUTHORIZED
+        )
+
         self.assertEquals(
             response.json(),
-            {'message': 'Вы подписались на обновления курса'}
+            {'detail': 'Учетные данные не были предоставлены.'}
         )
