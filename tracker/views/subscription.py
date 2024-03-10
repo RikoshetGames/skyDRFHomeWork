@@ -13,7 +13,7 @@ class SubscribeAPIView(APIView):
         course_id = self.request.data.get('course')
         course_item = get_object_or_404(Course, pk=course_id)
 
-        subs_item, created = Subscription.objects.get_or_create(user=user, course=course_item)
+        subs_item, created = Subscription.objects.get_or_create(user=user, course=course_item, status=True)
 
         if created:
             message = 'Вы подписались на обновления курса'

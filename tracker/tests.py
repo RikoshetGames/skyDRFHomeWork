@@ -88,13 +88,13 @@ class TrackerTestCase(APITestCase):
             data=data
         )
 
-        print(response.json())
+        # print(response.json())
 
         self.assertEquals(
             response.status_code,
             status.HTTP_201_CREATED
         )
-        print(response.json())
+        # print(response.json())
 
     def test_update_lesson(self):
         """Тестирование обновления урока"""
