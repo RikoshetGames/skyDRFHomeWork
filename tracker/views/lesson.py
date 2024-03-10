@@ -13,16 +13,15 @@ class LessonDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsOwner | IsModerator]
 
 class LessonListView(ListAPIView):
-    queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = [IsOwner | IsModerator]
+    permission_classes = [IsAuthenticated, IsModerator | IsOwner]
     pagination_class = LessonPagination
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_moderator:
+        if user.groups.filter(name='Moderator').exists():
             return Lesson.objects.all()
-        return Lesson.objects.filter(owner=user)
+        return Lesson.objects.filter(user=user)
 
 class LessonCreateView(CreateAPIView):
     queryset = Lesson.objects.all()
