@@ -235,3 +235,29 @@ class SubscriptionTestCase(APITestCase):
             response.json(),
             {'detail': 'Учетные данные не были предоставлены.'}
         )
+
+    def test_subscribe_to_not_existing_course(self):
+        """Тестирование подписки на несуществующий курс"""
+
+        not_existing_course = 8899
+
+        data = {
+            "course": not_existing_course,
+        }
+
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(
+            reverse('subscription'),
+            data=data
+        )
+
+        self.assertEquals(
+            response.status_code,
+            status.HTTP_404_NOT_FOUND
+        )
+
+        self.assertEquals(
+            response.json(),
+            {'detail': 'Страница не найдена.'}
+        )
