@@ -139,16 +139,11 @@ class SubscriptionTestCase(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create(
-            id=1,
-            email="user_test@mail.ru",
-            phone="1357986420",
-            city="Moscow",
+            email="user_test@mail.ru"
         )
         self.course = Course.objects.create(
-            id=2,
             name="Course_1",
-            description="CourseDescription_1",
-            user=self.user
+            description="CourseDescription_1"
         )
 
 
@@ -162,7 +157,7 @@ class SubscriptionTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         response = self.client.post(
-            reverse('subscription'),
+            reverse('subscription', kwargs={'pk': self.course.id}),
             data=data
         )
 
@@ -182,7 +177,6 @@ class SubscriptionTestCase(APITestCase):
         subscription = Subscription.objects.create(
             course=self.course,
             user=self.user,
-
         )
 
         subscription.refresh_from_db()
@@ -194,7 +188,7 @@ class SubscriptionTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         response_subscribe = self.client.post(
-            reverse('subscription'),
+            reverse('subscription', kwargs={'pk': subscription.id}),
             data=data
         )
 
@@ -208,7 +202,7 @@ class SubscriptionTestCase(APITestCase):
             {'message': 'Вы отписались от обновления курса'}
         )
 
-        self.user.refresh_from_db()
+        self.user.refresh_from_db()  # Обновляем данные пользователя из базы
         self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists())
 
     def test_subscribe_to_course_unauthorized(self):
@@ -219,7 +213,7 @@ class SubscriptionTestCase(APITestCase):
         }
 
         response = self.client.post(
-            reverse('subscription'),
+            reverse('subscription', kwargs={'pk': self.course.id}),
             data=data
         )
 
@@ -236,7 +230,7 @@ class SubscriptionTestCase(APITestCase):
     def test_subscribe_to_not_existing_course(self):
         """Тестирование подписки на несуществующий курс"""
 
-        not_existing_course = 8899
+        not_existing_course = 8998
 
         data = {
             "course": not_existing_course,
@@ -245,7 +239,7 @@ class SubscriptionTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         response = self.client.post(
-            reverse('subscription'),
+            reverse('subscription', kwargs={'pk': not_existing_course}),
             data=data
         )
 
@@ -258,3 +252,21 @@ class SubscriptionTestCase(APITestCase):
             response.json(),
             {'detail': 'Страница не найдена.'}
         )
+
+    def test_subscription_flag_for_retrieving_on_not_subscribed_user(self):
+        Subscription.objects.all().delete()
+        url = reverse('course-detail', kwargs={'pk': self.course.pk})
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.json()['is_subscribed'])
+
+    def test_subscription_flag_for_retrieving_on_subscribed_user(self):
+        Subscription.objects.create(course=self.course, user=self.user)
+        url = reverse('course-detail', kwargs={'pk': self.course.pk})
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.json()['is_subscribed'])
