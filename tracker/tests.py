@@ -152,9 +152,6 @@ class SubscriptionTestCase(APITestCase):
         )
 
 
-        self.user.status = False
-
-
     def test_subscribe_to_course(self):
         """Тестирование подписки на курс"""
 
@@ -185,6 +182,7 @@ class SubscriptionTestCase(APITestCase):
         subscription = Subscription.objects.create(
             course=self.course,
             user=self.user,
+
         )
 
         subscription.refresh_from_db()
