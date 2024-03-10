@@ -261,4 +261,3 @@ class SubscriptionTestCase(APITestCase):
             response.json(),
             {'detail': 'Страница не найдена.'}
         )
-
