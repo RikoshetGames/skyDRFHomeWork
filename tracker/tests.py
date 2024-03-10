@@ -222,3 +222,17 @@ class SubscriptionTestCase(APITestCase):
 
         self.user.refresh_from_db()  # Обновляем данные пользователя из базы
         self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists())
+
+    def test_auth_user_have_to_subscribe_course(self):
+        self.client.force_authenticate(user=self.user)
+        data = {
+            "course": self.course.id,
+        }
+
+        response = self.client.post(reverse('subscription'), data=data)
+
+        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(
+            response.json(),
+            {'message': 'Вы подписались на обновления курса'}
+        )
