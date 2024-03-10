@@ -185,7 +185,6 @@ class SubscriptionTestCase(APITestCase):
         subscription = Subscription.objects.create(
             course=self.course,
             user=self.user,
-            status=True
         )
 
         subscription.refresh_from_db()
