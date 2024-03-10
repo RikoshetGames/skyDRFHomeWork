@@ -159,7 +159,6 @@ class SubscriptionTestCase(APITestCase):
         """Тестирование подписки на курс"""
 
         data = {
-            "user": self.user.id,
             "course": self.course.id,
         }
 
@@ -179,9 +178,6 @@ class SubscriptionTestCase(APITestCase):
             response.json(),
             {'message': 'Вы подписались на обновления курса'}
         )
-
-        self.user.status = True
-        self.user.save()
 
     def test_unsubscribe_from_course(self):
         """Тестирование отписки от курса"""
