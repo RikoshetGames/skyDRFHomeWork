@@ -11,19 +11,14 @@ class TrackerTestCase(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create(
-            id=1,
             email="user_test@mail.ru",
-            phone="1357986420",
-            city="Moscow",
         )
         self.course = Course.objects.create(
-            id=2,
             name="Course_1",
             description="CourseDescription_1",
             user=self.user
         )
         self.lesson = Lesson.objects.create(
-            id=3,
             name="Lesson_1",
             description="LessonDescription_1",
             video_link="test.youtube.com",
