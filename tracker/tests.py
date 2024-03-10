@@ -181,45 +181,35 @@ class SubscriptionTestCase(APITestCase):
 
     def test_unsubscribe_from_course(self):
         """Тестирование отписки от курса"""
+
+        subscription = Subscription.objects.create(
+            course=self.course,
+            user=self.user,
+            status=True
+        )
+
+        subscription.refresh_from_db()
+
         data = {
             "course": self.course.id,
         }
 
-        # Подписываем пользователя на курс
         response_subscribe = self.client.post(
             reverse('subscription'),
             data=data
         )
+
         self.assertEquals(
             response_subscribe.status_code,
             status.HTTP_200_OK
         )
+
         self.assertEquals(
             response_subscribe.json(),
-            {'message': 'Вы подписались на обновления курса'}
-        )
-
-        self.user.status = True
-        self.user.save()
-
-        # Отписываем пользователя от курса
-        response_unsubscribe = self.client.post(
-            reverse('subscription'),
-            data=data
-        )
-        self.assertEquals(
-            response_unsubscribe.status_code,
-            status.HTTP_200_OK
-        )
-        self.assertEquals(
-            response_unsubscribe.json(),
             {'message': 'Вы отписались от обновления курса'}
         )
 
-        self.user.status = False
-        self.user.save()
-
-        self.user.refresh_from_db()  # Обновляем данные пользователя из базы
+        self.user.refresh_from_db()
         self.assertFalse(Subscription.objects.filter(user=self.user, course=self.course).exists())
 
     def test_auth_user_have_to_subscribe_course(self):
