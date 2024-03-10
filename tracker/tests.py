@@ -134,6 +134,23 @@ class TrackerTestCase(APITestCase):
             status.HTTP_204_NO_CONTENT
         )
 
+    def test_subscription_flag_for_retrieving_on_not_subscribed_user(self):
+        Subscription.objects.all().delete()
+        url = reverse('course-detail', kwargs={'pk': self.course.pk})
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.json()['is_subscribed'])
+
+    def test_subscription_flag_for_retrieving_on_subscribed_user(self):
+        Subscription.objects.create(course=self.course, user=self.user)
+        url = reverse('course-detail', kwargs={'pk': self.course.pk})
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.json()['is_subscribed'])
 
 class SubscriptionTestCase(APITestCase):
 
@@ -253,20 +270,4 @@ class SubscriptionTestCase(APITestCase):
             {'detail': 'Страница не найдена.'}
         )
 
-    def test_subscription_flag_for_retrieving_on_not_subscribed_user(self):
-        Subscription.objects.all().delete()
-        url = reverse('course-detail', kwargs={'pk': self.course.pk})
 
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(response.json()['is_subscribed'])
-
-    def test_subscription_flag_for_retrieving_on_subscribed_user(self):
-        Subscription.objects.create(course=self.course, user=self.user)
-        url = reverse('course-detail', kwargs={'pk': self.course.pk})
-
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(response.json()['is_subscribed'])
