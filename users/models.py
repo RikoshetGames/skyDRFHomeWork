@@ -32,10 +32,13 @@ class Payment(models.Model):
     lesson = models.ForeignKey('tracker.Lesson', on_delete=models.CASCADE, verbose_name='Урок', related_name='payments', **NULLABLE)
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма')
     payment_method = models.CharField(max_length=50, choices=[('cash', 'Cash'), ('transfer', 'Transfer')], verbose_name='Способ оплаты')
+    payment_url = models.URLField(max_length=500, default='',verbose_name='Ссылка на оплату')
+    status = models.CharField(max_length=1, default='P', choices=[("P", "Process"), ("S", "Success"), ("C", "Canceled")],
+                              verbose_name='Статус платежа')
 
     class Meta:
         verbose_name = 'Оплата'
         verbose_name_plural = 'Оплаты'
 
     def __str__(self):
-        return self.user
+        return f'Пользователь {self.user} оплатил курс {self.course} за {self.amount}'
