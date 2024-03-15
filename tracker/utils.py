@@ -16,4 +16,4 @@ def get_url_for_payment(course):
         line_items=[{"price": responce_price["id"], "quantity": 1}],
         mode="payment",
     )
-    return responce_url["url"]
+    return responce_url["url"], responce_url["id"]
